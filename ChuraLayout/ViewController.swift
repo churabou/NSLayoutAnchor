@@ -41,44 +41,60 @@ extension UIView {
 
 class ViewController: UIViewController {
     
-    let red = UIView()
-    let blue = UIView()
-    let green = UIView()
-    
     
     override func viewDidLoad() {
         
         
+//        red.chura.constrainWith(view, view) { red, superView, _ in
+//            red.LayoutX(left: superView.left, width: 300)
+//            red.LayoutY(top: superView.top+50, height: 300)
+//        }
+        
+//        blue.chura.constrainWith(red, view) { blue, red, superView in
+//            blue.LayoutX(left: red.left, right: superView.right)
+//            blue.LayoutY(top: red.bottom, bottom: superView.bottom)
+//        }
+        
+        
+        
+        let red = UIView()
+        red.backgroundColor = .red
         view.addSubview(red)
+        
+        let blue = UIView()
+        blue.backgroundColor = .blue
         view.addSubview(blue)
+        
+        let green = UIView()
+        green.backgroundColor = .green
         view.addSubview(green)
         
-        red.backgroundColor = .red
-        blue.backgroundColor = .blue
-        green.backgroundColor = .green
+        let yellow = UIView()
+        yellow.backgroundColor = .yellow
+        view.addSubview(yellow)
         
-        red.translatesAutoresizingMaskIntoConstraints = false
-        blue.translatesAutoresizingMaskIntoConstraints = false
-        green.translatesAutoresizingMaskIntoConstraints = false
-        
-        
-        red.chura.constrainWith(view, view) { red, superView, _ in
-            red.LayoutX(left: superView.left, width: CGFloat(300))
-            red.LayoutY(top: superView.top+50, height: CGFloat(300))
-        }
-        
-        blue.chura.constrainWith(red, view) { blue, red, superView in
-            blue.LayoutX(left: red.left, right: superView.right)
-            blue.LayoutY(top: red.bottom, bottom: superView.bottom)
-        }
-        
-        
+
         //just chainable layout makerで一度Fix
+        LayoutMaker(red)
+            .left(20).right(-20).top(50).height(30)
+      
+        LayoutMaker(blue)
+            .left(red.anchor.left)
+            .width(150)
+            .height(150)
+            .top(red.anchor.bottom+30)
+
         LayoutMaker(green)
-            .width(view.anchor.width + (-30))
-            .height(CGFloat(100))
-            .centerY(view.anchor.centerY)
-            .centerX(view.anchor.centerX)
+            .right(red.anchor.right)
+            .width(150)
+            .height(150)
+            .top(blue.anchor.top)
+        
+        LayoutMaker(yellow)
+            .width(view.anchor.width - 100)
+            .centerX(0)
+            .height(50)
+            .top(green.anchor.bottom + 30)
     }
 }
 

@@ -13,26 +13,27 @@ class LayoutMaker {
     var base: UIView
     init (_ base: UIView) {
         self.base = base
+        base.translatesAutoresizingMaskIntoConstraints = false
     }
     
     func activateLayoutAnchorXAxis(_ constrain: HorizontalConstraints, target: LayoutTarget.XAxis) {
         
         let anchor = base.layoutAnchor(target)
         
-        if let constrain = constrain as? Wrapper<NSLayoutXAxisAnchor> {
+        if let constrain = constrain as? AnchorCalculable<NSLayoutXAxisAnchor> {
             anchor.constraint(equalTo: constrain.target, constant: constrain.amount).activate()
         }
-        
-        if let constrain = constrain as? NSLayoutXAxisAnchor {
+        else if let constrain = constrain as? NSLayoutXAxisAnchor {
             anchor.constraint(equalTo: constrain).activate()
         }
-        
-        if let view = constrain as? UIView {
+        else if let view = constrain as? UIView {
             anchor.constraint(equalTo: view.layoutAnchor(target)).activate()
         }
-        
-        if let constrain = constrain as? CGFloat {
+        else if let constrain = constrain as? CGFloat {
             anchor.constraint(equalTo: base.superview!.layoutAnchor(target), constant: constrain).activate()
+        }
+        else if let constrain = constrain as? Int {
+            anchor.constraint(equalTo: base.superview!.layoutAnchor(target), constant: CGFloat(constrain)).activate()
         }
     }
     
@@ -40,20 +41,20 @@ class LayoutMaker {
         
         let anchor = base.layoutAnchor(target)
         
-        if let constrain = constrain as? Wrapper<NSLayoutYAxisAnchor> {
+        if let constrain = constrain as? AnchorCalculable<NSLayoutYAxisAnchor> {
             anchor.constraint(equalTo: constrain.target, constant: constrain.amount).activate()
         }
-        
-        if let constrain = constrain as? NSLayoutYAxisAnchor {
+        else if let constrain = constrain as? NSLayoutYAxisAnchor {
             anchor.constraint(equalTo: constrain).activate()
         }
-        
-        if let view = constrain as? UIView {
+        else if let view = constrain as? UIView {
             anchor.constraint(equalTo: view.layoutAnchor(target)).activate()
         }
-        
-        if let constrain = constrain as? CGFloat {
+        else if let constrain = constrain as? CGFloat {
             anchor.constraint(equalTo: base.superview!.layoutAnchor(target), constant: constrain).activate()
+        }
+        else if let constrain = constrain as? Int {
+            anchor.constraint(equalTo: base.superview!.layoutAnchor(target), constant: CGFloat(constrain)).activate()
         }
     }
     
@@ -61,20 +62,20 @@ class LayoutMaker {
     func activateLayoutAnchorDimension(_ constrain: DimensionalConstraints, target: LayoutTarget.Dimension) {
         
         let anchor = base.layoutAnchor(target)
-        if let constrain = constrain as? Wrapper<NSLayoutDimension> {
+        if let constrain = constrain as? AnchorCalculable<NSLayoutDimension> {
             anchor.constraint(equalTo: constrain.target, multiplier: 1, constant: constrain.amount).activate()
         }
-        
-        if let constrain = constrain as? NSLayoutDimension {
+        else if let constrain = constrain as? NSLayoutDimension {
             anchor.constraint(equalTo: constrain).activate()
         }
-        
-        if let view = constrain as? UIView {
+        else if let view = constrain as? UIView {
             anchor.constraint(equalTo: view.layoutAnchor(target), multiplier: 1).activate()
         }
-        
-        if let constant = constrain as? CGFloat {
+        else if let constant = constrain as? CGFloat {
             anchor.constraint(equalToConstant: constant).activate()
+        }
+        else if let constant = constrain as? Int {
+            anchor.constraint(equalToConstant: CGFloat(constant)).activate()
         }
     }
 }

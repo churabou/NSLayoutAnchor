@@ -74,14 +74,15 @@ extension NSLayoutDimension: DimensionalConstraints {
 
 typealias ConstraintsTarget = HorizontalConstraints & VerticalConstraints & DimensionalConstraints
 
+extension Int: ConstraintsTarget {}
 extension CGFloat: ConstraintsTarget {}
 extension UIView: ConstraintsTarget {}
 
 
 
 
-//LayoutAnchor + 10を可能にするためのもの。
-class Wrapper<T> {
+//LayoutAnchor + 10
+class AnchorCalculable<T> {
     
     var target: T
     var amount: CGFloat
@@ -94,30 +95,44 @@ class Wrapper<T> {
 
 //この2つも多分共通化できるはず。
 extension NSLayoutXAxisAnchor {
-    
-    static func +(lhd: NSLayoutXAxisAnchor, rhd: CGFloat) -> Wrapper<NSLayoutXAxisAnchor> {
-        return Wrapper(target: lhd, amount: rhd)
+
+    static func +(lhd: NSLayoutXAxisAnchor, rhd: CGFloat) -> AnchorCalculable<NSLayoutXAxisAnchor> {
+        return AnchorCalculable(target: lhd, amount: rhd)
+    }
+
+    static func -(lhd: NSLayoutXAxisAnchor, rhd: CGFloat) -> AnchorCalculable<NSLayoutXAxisAnchor> {
+        return AnchorCalculable(target: lhd, amount: -rhd)
     }
 }
 
 extension NSLayoutYAxisAnchor {
-    static func +(lhd: NSLayoutYAxisAnchor, rhd: CGFloat) -> Wrapper<NSLayoutYAxisAnchor> {
-        return Wrapper(target: lhd, amount: rhd)
+
+    static func +(lhd: NSLayoutYAxisAnchor, rhd: CGFloat) -> AnchorCalculable<NSLayoutYAxisAnchor> {
+        return AnchorCalculable(target: lhd, amount: rhd)
+    }
+
+    static func -(lhd: NSLayoutYAxisAnchor, rhd: CGFloat) -> AnchorCalculable<NSLayoutYAxisAnchor> {
+        return AnchorCalculable(target: lhd, amount: -rhd)
     }
 }
 
 extension NSLayoutDimension {
-    static func +(lhd: NSLayoutDimension, rhd: CGFloat) -> Wrapper<NSLayoutDimension> {
-        return Wrapper(target: lhd, amount: rhd)
+
+    static func +(lhd: NSLayoutDimension, rhd: CGFloat) -> AnchorCalculable<NSLayoutDimension> {
+        return AnchorCalculable(target: lhd, amount: rhd)
+    }
+
+    static func -(lhd: NSLayoutDimension, rhd: CGFloat) -> AnchorCalculable<NSLayoutDimension> {
+        return AnchorCalculable(target: lhd, amount: -rhd)
     }
 }
 
 
-extension Wrapper: HorizontalConstraints where T == NSLayoutXAxisAnchor {
+extension AnchorCalculable: HorizontalConstraints where T == NSLayoutXAxisAnchor {
 }
 
-extension Wrapper: VerticalConstraints where T == NSLayoutYAxisAnchor {
+extension AnchorCalculable: VerticalConstraints where T == NSLayoutYAxisAnchor {
 }
 
-extension Wrapper: DimensionalConstraints where T == NSLayoutDimension {
+extension AnchorCalculable: DimensionalConstraints where T == NSLayoutDimension {
 }
