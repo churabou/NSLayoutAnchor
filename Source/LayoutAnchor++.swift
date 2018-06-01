@@ -8,48 +8,6 @@
 
 import UIKit
 
-enum LayoutTarget {
-    
-    enum XAxis {
-        case left, right, centerX
-    }
-    
-    enum YAxis {
-        case top, bottom, centerY
-    }
-    
-    enum Dimension {
-        case width, height
-    }
-}
-
-extension UIView {
-
-    func layoutAnchor(_ target: LayoutTarget.XAxis) -> NSLayoutXAxisAnchor {
-        switch target {
-        case .left: return leftAnchor
-        case .right: return rightAnchor
-        case .centerX: return centerXAnchor
-        }
-    }
-    
-    func layoutAnchor(_ target: LayoutTarget.YAxis) -> NSLayoutYAxisAnchor {
-        switch target {
-        case .top: return topAnchor
-        case .bottom: return bottomAnchor
-        case .centerY: return centerYAnchor
-        }
-    }
-    
-    func layoutAnchor(_ target: LayoutTarget.Dimension) -> NSLayoutDimension {
-        switch target {
-        case .width: return widthAnchor
-        case .height: return heightAnchor
-        }
-    }
-}
-
-
 // left, right, centerX
 protocol HorizontalConstraints {
 }
