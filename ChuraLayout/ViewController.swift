@@ -74,7 +74,6 @@ class ViewController: UIViewController {
         view.addSubview(yellow)
         
 
-        //just chainable layout makerで一度Fix
         LayoutMaker(red)
             .left(20).right(-20).top(50).height(30)
       
@@ -82,7 +81,7 @@ class ViewController: UIViewController {
             .left(red.anchor.left)
             .width(150)
             .height(150)
-            .top(red.anchor.bottom+30)
+            .top(red.anchor.bottom + 30)
 
         LayoutMaker(green)
             .right(red.anchor.right)
