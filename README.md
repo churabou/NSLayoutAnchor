@@ -26,27 +26,27 @@ x軸に2つ制約がついたらY軸とかもっと工夫したい。
 
 
 ``` .swift
-
-        LayoutMaker(red)
+        red.chura.layout
             .left(20).right(-20).top(50).height(30)
       
-        LayoutMaker(blue)
+        blue.chura.layout
             .left(red.anchor.left)
             .width(150)
             .height(150)
             .top(red.anchor.bottom + 30)
 
-        LayoutMaker(green)
+        green.chura.layout
             .right(red.anchor.right)
             .width(150)
             .height(150)
             .top(blue.anchor.top)
         
-        LayoutMaker(yellow)
+        yellow.chura.layout
             .width(view.anchor.width - 100)
             .centerX(0)
             .height(50)
             .top(green.anchor.bottom + 30)
+
 ```
 
 
