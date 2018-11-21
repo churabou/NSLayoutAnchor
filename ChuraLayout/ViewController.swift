@@ -11,55 +11,10 @@
 import UIKit
 
 
-
-
-class ChuraLayout {
-    
-    var target: UIView
-    
-    init (_ target: UIView) {
-        self.target = target
-    }
-    
-    func constrainWith(_ view1: UIView, _ view2: UIView, closure: ((LayoutMaker, AnchorShortcut, AnchorShortcut)->Swift.Void)) {
-        closure(LayoutMaker(target), AnchorShortcut(view1), AnchorShortcut(view2))
-    }
-    
-    var layout: LayoutMaker {
-        return LayoutMaker(target)
-    }
-}
-
-
-extension UIView {
-    
-    var chura: ChuraLayout {
-        return ChuraLayout(self)
-    }
-    
-    var anchor: AnchorShortcut {
-        return AnchorShortcut(self)
-    }
-}
-
-
 class ViewController: UIViewController {
     
     
     override func viewDidLoad() {
-        
-        
-//        red.chura.constrainWith(view, view) { red, superView, _ in
-//            red.LayoutX(left: superView.left, width: 300)
-//            red.LayoutY(top: superView.top+50, height: 300)
-//        }
-        
-//        blue.chura.constrainWith(red, view) { blue, red, superView in
-//            blue.LayoutX(left: red.left, right: superView.right)
-//            blue.LayoutY(top: red.bottom, bottom: superView.bottom)
-//        }
-        
-        
         
         let red = UIView()
         red.backgroundColor = .red
@@ -69,6 +24,11 @@ class ViewController: UIViewController {
         blue.backgroundColor = .blue
         view.addSubview(blue)
         
+        let orange = UIView()
+        orange.backgroundColor = .orange
+        view.addSubview(orange)
+        
+        
         let green = UIView()
         green.backgroundColor = .green
         view.addSubview(green)
@@ -77,27 +37,25 @@ class ViewController: UIViewController {
         yellow.backgroundColor = .yellow
         view.addSubview(yellow)
         
-
-        red.chura.layout
-            .left(20).right(-20).top(50).height(30)
-      
-        blue.chura.layout
-            .left(red.anchor.left)
-            .width(150)
-            .height(150)
-            .top(red.anchor.bottom + 30)
-
-        green.chura.layout
-            .right(red.anchor.right)
-            .width(150)
-            .height(150)
-            .top(blue.anchor.top)
+        // most simple
+        red.chura.layout.equalToSuperView()
+        blue.chura.layout.size(200).center(0)
         
         yellow.chura.layout
-            .width(view.anchor.width - 100)
-            .centerX(0)
-            .height(50)
-            .top(green.anchor.bottom + 30)
+            .top(blue).height(100)
+            .left(10).width(50)
+        
+        // operator
+        orange.chura.layout
+            .top(view.safeAreaLayoutGuide.topAnchor+10).height(view.heightAnchor/5)
+            .left(view.leftAnchor+10).right(view.rightAnchor-10)
+        
+        // relation
+        green.chura.layout
+            .top(anchor: orange.bottomAnchor, offSet: 20)
+            .bottom(anchor: blue.topAnchor, offSet: -20)
+            .right(anchor: view.rightAnchor, offSet: -10)
+            .width(anchor: blue.widthAnchor, multiplier: 1/3)
     }
 }
 
